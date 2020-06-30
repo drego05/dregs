@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<cherrytree>
+	<node custom_icon_id="0" foreground="" is_bold="False" name="infovore" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1593479133.49" ts_lastsave="1593479145.69" unique_id="1">
+		<rich_text>nmap scan -A -p- returns
+
+only port 80 is open- apache httpd 2.4.38
+
+_http-server-header Apache/2.4.38 (Debian)
+_http-title: Inlclude Me.
+
+info.php is available.</rich_text>
+	</node>
+</cherrytree>

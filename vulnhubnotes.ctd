@@ -1,0 +1,247 @@
+<?xml version="1.0" ?>
+<cherrytree>
+	<node custom_icon_id="0" foreground="" is_bold="False" name="infovore" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1593479133.49" ts_lastsave="1593479494.31" unique_id="1">
+		<rich_text>nmap scan -A -p- returns
+
+only port 80 is open- apache httpd 2.4.38
+
+_http-server-header Apache/2.4.38 (Debian)
+_http-title: Inlclude Me.
+
+info.php is available.</rich_text>
+	</node>
+	<node custom_icon_id="0" foreground="" is_bold="False" name="ganana" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1593479494.31" ts_lastsave="1593479788.72" unique_id="2">
+		<rich_text></rich_text>
+		<node custom_icon_id="0" foreground="" is_bold="False" name="nikto scan" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1593479631.71" ts_lastsave="1593479653.82" unique_id="3">
+			<rich_text>nikto scan results:
+
+nikto --host </rich_text>
+			<rich_text link="webs http://192.168.86.43">http://192.168.86.43</rich_text>
+			<rich_text>
+- Nikto v2.1.6
+---------------------------------------------------------------------------
++ Target IP:          192.168.86.43
++ Target Hostname:    192.168.86.43
++ Target Port:        80
++ Start Time:         2020-06-28 11:18:57 (GMT-7)
+---------------------------------------------------------------------------
++ Server: Apache
++ Retrieved x-powered-by header: PHP/7.3.17
++ The X-XSS-Protection header is not defined. This header can hint to the user agent to protect against some forms of XSS
++ Uncommon header 'link' found, with contents: &lt;</rich_text>
+			<rich_text link="webs http://192.168.86.43/wp-json/&gt;;">http://192.168.86.43/wp-json/&gt;;</rich_text>
+			<rich_text> rel=&quot;</rich_text>
+			<rich_text link="webs https://api.w.org/&quot;">https://api.w.org/&quot;</rich_text>
+			<rich_text>
++ The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fashion to the MIME type
++ Uncommon header 'x-redirect-by' found, with contents: WordPress
++ No CGI Directories found (use '-C all' to force check all possible dirs)
++ Entry '/wp-admin/' in robots.txt returned a non-forbidden or redirect HTTP code (302)
++ Uncommon header 'x-robots-tag' found, with contents: noindex
++ &quot;robots.txt&quot; contains 2 entries which should be manually viewed.
++ Uncommon header 'tcn' found, with contents: list
++ Apache mod_negotiation is enabled with MultiViews, which allows attackers to easily brute force file names. See </rich_text>
+			<rich_text link="webs http://www.wisec.it/sectou.php?id=4698ebdc59d15.">http://www.wisec.it/sectou.php?id=4698ebdc59d15.</rich_text>
+			<rich_text> The following alternatives for 'index' were found: index.php
++ Web Server returns a valid response with junk HTTP methods, this may cause false positives.
++ Cookie wordpress_test_cookie created without the httponly flag
++ Cookie goto created without the httponly flag
++ Cookie back created without the httponly flag
++ Uncommon header 'x-ob_moduse e' found, with contents: 1
++ Uncommon header 'referrer-policy' found, with contents: no-referrer
++ Uncommon header 'x-permitted-cross-domain-policies' found, with contents: none
++ Server leaks inodes via ETags, header found with file /phpmyadmin/ChangeLog, fields: 0x6afe 0x5a155aec52100 
++ OSVDB-3092: /phpmyadmin/ChangeLog: phpMyAdmin is for managing MySQL databases, and should be protected or limited to authorized hosts.
++ OSVDB-3092: /secret/: This might be interesting...
++ /wp-links-opml.php: This WordPress script reveals the installed version.
++ OSVDB-3092: /license.txt: License file found may identify site software.
++ /wp-app.log: Wordpress' wp-app.log may leak application/system details.
++ /wordpress/: A Wordpress installation was found.
++ /phpmyadmin/: phpMyAdmin directory found
++ 7539 requests: 0 error(s) and 25 item(s) reported on remote host
++ End Time:           2020-06-28 11:29:20 (GMT-7) (623 seconds)
+searc</rich_text>
+		</node>
+		<node custom_icon_id="0" foreground="" is_bold="False" name="notes" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1593479671.45" ts_lastsave="1593479684.59" unique_id="4">
+			<rich_text>several pages worth investigating. 
+
+
+robots.txt
+
+</rich_text>
+			<rich_text link="webs http://192.168.86.43/secret/">http://192.168.86.43/secret/</rich_text>
+			<rich_text>
+
+
+</rich_text>
+			<rich_text link="webs http://192.168.86.43/phpmyadmin/">http://192.168.86.43/phpmyadmin/</rich_text>
+			<rich_text>
+
+
+
+robots.txt --- allow wp-admin
+
+User agent - *   (not sure if that means anyone?)
+
+Disallow /wp-admin
+ALLOW: /wp-admin/admin-ajax.php
+
+
+hmm interesting. will test both. 
+
+</rich_text>
+			<rich_text link="webs http://192.168.86.43/wp-admin/admin-ajax.php">http://192.168.86.43/wp-admin/admin-ajax.php</rich_text>
+			<rich_text> returns 0
+
+
+
+So basically, what the pentester did here was they found the same /tasks file that I did. 
+Once they had it, for some reason they knew to to search 
+
+I'm glad I was in the right direction with the jarret lee task...
+
+but not sure why they knew to look for jarret.pcapng--- no idea. 
+
+they found an HTTP plain text wireshark grab looking for POST and HTML Form URL Encoded username and password.
+
+log: jarretlee
+pwd: NoBrUtEf0rCe_R3Qu1R3d_
+
+checked with la cashita -- it was just a guess and from experience. hmm great. 
+
+my method-- apparently not the right one. 
+
+FTP in using jarretlee and his passsword. 
+
+I grabbed the wp-config file which had the information I was able to use to login to phpmyadmin. 
+
+from there I saw the charleywalker userlogin with his password $1$3XBpIe2h$/BsWPw8vEnFAp/Vg4W/Sx.
+and also jarretlee with the password $1$yt2n44XO$jU148IfWAYDS90CQHfwDH1
+
+charley-walker@ganana.com
+jarret@ganana.com
+
+apparently the play here is to grab the .backups file. AND the file I grabbed. 
+
+checking the .backups file 
+
+NoBrUtEfOrCe__R3Qu1R3d__
+
+
+after grabbing the .backups file --- it's got a super long has on it. maybe we run hashcat on that?
+
+
+negative. we can the full string from backups -- echo “amVldmFuOiQ2JExYTmFrYUJSSi90TDVGMmEkYkNnaXlsay9MWTJNZUZwNXo5WVp5aWV6c05zZ2ouNS9jRG9oUmdGUkJOZHJ3aS8ySVBrVU8wcnFWSU0zTzh2eXNjNDhnM1pwby9zSHVvLnF3QmY0VTE6MTg0MzA6MDo5OTk5OTo3Ojo6” | base -d
+
+so we're piping the contents from .backups into base64 -d which spits out.
+
+
+jeevan:$6$LXNakaBRJ/tL5F2a$bCgiylk/LY2MeFp5z9YZyiezsNsgj.5/cDohRgFRBNdrwi/2IPkUO0rqVIM3O8vysc48g3Zpo/sHuo.qwBf4U1:18430:0:99999:7:::
+
+looks like the play here... is to grab this information here: 
+jeevan:$6$LXNakaBRJ/tL5F2a$bCgiylk/LY2MeFp5z9YZyiezsNsgj.5/cDohRgFRBNdrwi/2IPkUO0rqVIM3O8vysc48g3Zpo/sHuo.qwBf4U1
+
+and run john on that   with sudo /usr/sbin/john pathtopasswordtocrack
+
+finally able to crack the password - hannahmontana    (jeevan)
+
+looks like we then take the passwords from the database and throw them in /secret which is the Wordpress site login.
+
+
+ahh then it looks like since we have access to the phpmyadmin database, we then copy jarret's password and give that same password to charleywalker, THEN we login with charleywalker
+
+when logged into the wp-admin page--- found a post from charleywalker that says KEEP dis secret! - QGx3YXlzLUAtU3VwM3ItU2VjdXIzLXBAU1N3MFJkISE
+
+
+looks like SINCE we have access to the wp admin site - we can customize the 404.php file -- and we're going to edit that file so that when it's run, it'll run our reverse shell script and we'll have the waiting netcat listerner on that port waiting to catch it. success!
+
+now that we're in... what do do?
+
+looks like they run:  python3 -c  ‘import pty; pty.spawn(”/bin/bash&quot;)’ once you load that... it loads up a daemon@debian shell. 
+
+then export TERM=linux     --which looks like it customizes the shell and terminal for linux use?
+
+then we login with the jeevan username and password we cracked- hannahmontana
+
+after we're logged in with jeevan, we check id's again and see that we're running docker as well as other id information, groups, uid's and such.
+
+i know a bit about docker so I know that you can run “docker images” to see what images are there. 
+
+then you run the image based on the ID... the commands he used had some strange stuff to them... it looks like it mounted the directory locally and then gave sudo and interactive tags with: 
+
+docker run -v /:/mnt/whateveryouwanttonameit -ti and then the image id number. 
+
+once it's mounted, you can run cd /mnt/whateveryounamed it because that's where you mounted it. then access the root directory flag! yay!
+
+
+
+
+
+</rich_text>
+		</node>
+		<node custom_icon_id="0" foreground="" is_bold="False" name="dirb info" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1593479719.59" ts_lastsave="1593479748.69" unique_id="5">
+			<rich_text link="webs http://192.168.86.43/tasks">http://192.168.86.43/tasks</rich_text>
+			<rich_text>
+
+
+returns:
+
+Hey Jarret Lee!
+
+Do manage the office as the admin is away for a few weeks! 
+Admin has created an other temp account for you and details in a pcapng file. 
+
+
+
+la cashita from youtube... just happened to know from experience to check the root directory for jarret.pcapng, magically it was there as a pcap file for wireshark, check that out, filter for http plain text traffic and then find the POST that has the form submitted username and password, wallah!
+
+</rich_text>
+			<rich_text justification="left"></rich_text>
+			<codebox char_offset="497" frame_height="100" frame_width="700" highlight_brackets="True" show_line_numbers="False" syntax_highlighting="plain-text" width_in_pixels="True">dirb </codebox>
+		</node>
+		<node custom_icon_id="0" foreground="" is_bold="False" name="nmap scan" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1593479788.72" ts_lastsave="1593479791.01" unique_id="6">
+			<rich_text>- running nmap -A (which is going to setup a shit ton of bells and alarms
+
+nmap scan results
+
+• Starting Nmap 7.70 ( </rich_text>
+			<rich_text link="webs https://nmap.org">https://nmap.org</rich_text>
+			<rich_text> ) at 2020-06-28 11:15 PDT
+Nmap scan report for debian.lan (192.168.86.43)
+Host is up (0.00046s latency).
+Not shown: 997 filtered ports
+PORT    STATE  SERVICE  VERSION
+22/tcp  closed ssh
+80/tcp  open   http     Apache httpd (PHP 7.3.17)
+|_http-generator: WordPress 5.4.2
+| http-robots.txt: 1 disallowed entry 
+|_/wp-admin/
+|_http-server-header: Apache
+|_http-title: Ganana
+443/tcp open   ssl/http Apache httpd (PHP 7.3.17)
+|_http-generator: WordPress 5.4.2
+| http-robots.txt: 1 disallowed entry 
+|_/wp-admin/
+|_http-server-header: Apache
+|_http-title: Ganana
+| ssl-cert: Subject: commonName=</rich_text>
+			<rich_text link="webs http://www.example.com/organizationName=Bitnami">www.example.com/organizationName=Bitnami</rich_text>
+			<rich_text>
+| Not valid before: 2020-06-06T10:55:45
+|_Not valid after:  2030-06-04T10:55:45
+MAC Address: 08:00:27:C8:F6:23 (Oracle VirtualBox virtual NIC)
+Aggressive OS guesses: Linux 2.6.32 - 3.13 (95%), Linux 2.6.22 - 2.6.36 (93%), Linux 3.10 - 4.11 (93%), Linux 2.6.39 (93%), Linux 3.10 (93%), Linux 2.6.32 (92%), Linux 3.2 - 4.9 (92%), Linux 2.6.32 - 3.10 (92%), Linux 2.6.18 (91%), Linux 3.16 - 4.6 (91%)
+No exact OS matches for host (test conditions non-ideal).
+Network Distance: 1 hop
+
+TRACEROUTE
+HOP RTT     ADDRESS
+1   0.46 ms debian.lan (192.168.86.43)
+
+OS and Service detection performed. Please report any incorrect results at </rich_text>
+			<rich_text link="webs https://nmap.org/submit/">https://nmap.org/submit/</rich_text>
+			<rich_text> .
+Nmap done: 1 IP address (1 host up) scanned in 27.06 seconds</rich_text>
+		</node>
+	</node>
+</cherrytree>
